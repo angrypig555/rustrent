@@ -1,5 +1,5 @@
 /*
- lib.rs - rustrent
+ bencode.rs - rustrent
  Copyright [2026] [angrypig555]
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,32 +15,10 @@
    limitations under the License.
 */
 
-use std::sync::RwLock;
-use std::sync::LazyLock;
-/// needs to be initialized 
-mod bencode;
-pub struct config {
-    version: String,
+struct bencode_decoded {
     name: String,
 }
 
-pub static GLOBAL_CONFIG: LazyLock<RwLock<config>> = LazyLock::new(|| {
-    RwLock::new(config {
-        version: String::from("v0.1"),
-        name: String::from("rustrent"),
-    })
-});
+pub fn decode_bencode() {
 
-pub fn get_conf_info() -> String {
-    let cfg = GLOBAL_CONFIG.read().unwrap();
-    format!("{} {}", cfg.name, cfg.version)
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn infotest() {
-        println!("{}", get_conf_info());
-    }
 }
