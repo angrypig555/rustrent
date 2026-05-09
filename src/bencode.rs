@@ -97,6 +97,10 @@ pub struct Torrent {
     pub created_by: Option<String>,
 }
 
+/// Parses bencode
+/// 
+/// Parses the bencode provided as a Vec<u8>
+/// Returns a Torrent struct and a serde_bencode::Error
 pub fn parse_bencode(buffer: Vec<u8>) -> Result<Torrent, serde_bencode::Error> {
     let t = de::from_bytes::<Torrent>(&buffer)?;
     Ok(t)

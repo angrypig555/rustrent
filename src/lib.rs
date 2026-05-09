@@ -20,11 +20,18 @@ use std::sync::LazyLock;
 /// needs to be initialized 
 mod bencode;
 mod connection_handler;
-pub struct config {
-    version: String,
-    name: String,
-}
 
+/// Struct for the configuration
+/// Used by GLOBAL_CONFIG
+pub struct config {
+    pub version: String,
+    pub name: String,
+}
+/// Global configuration
+/// 
+/// LazyLock + RwLock global struct.
+/// Filled with placeholder values at start.
+/// It is reccomended to save / read the configuration fromn the user.
 pub static GLOBAL_CONFIG: LazyLock<RwLock<config>> = LazyLock::new(|| {
     RwLock::new(config {
         version: String::from("v0.1"),
@@ -32,6 +39,10 @@ pub static GLOBAL_CONFIG: LazyLock<RwLock<config>> = LazyLock::new(|| {
     })
 });
 
+
+/// Get the current configuration as a formatted string
+/// 
+/// Returns: name version
 pub fn get_conf_info() -> String {
     let cfg = GLOBAL_CONFIG.read().unwrap();
     format!("{} {}", cfg.name, cfg.version)
