@@ -1,0 +1,3 @@
+Project includes third-party dependencies:
+ - serde_bencode (MIT)
+ - serde (Apache-2.0 OR MIT)
