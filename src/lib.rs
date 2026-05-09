@@ -19,6 +19,7 @@ use std::sync::RwLock;
 use std::sync::LazyLock;
 /// needs to be initialized 
 mod bencode;
+mod connection_handler;
 pub struct config {
     version: String,
     name: String,
