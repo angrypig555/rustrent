@@ -36,23 +36,23 @@
     }
         */
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_bencode::de;
 use serde_bytes::ByteBuf;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 struct Node(String, i64);
 
-#[derive(Debug, Deserialize)]
-struct File {
-    path: Vec<String>,
-    length: i64,
+#[derive(Debug, Deserialize, Serialize)]
+pub struct File {
+    pub path: Vec<String>,
+    pub length: i64,
     #[serde(default)]
-    md5sum: Option<String>,
+    pub md5sum: Option<String>,
 }
 
 #[allow(dead_code)]
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Info {
     pub name: String,
     pub pieces: ByteBuf,
@@ -73,7 +73,7 @@ pub struct Info {
     pub root_hash: Option<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Torrent {
     pub info: Info,
     #[serde(default)]

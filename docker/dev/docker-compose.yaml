@@ -4,3 +4,5 @@ services:
     ports:
       - "6969:6969/udp"
       - "6969:6969/tcp"
+    volumes:
+      - ./tracker_config:/etc/torrust/tracker
