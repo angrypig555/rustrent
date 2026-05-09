@@ -1,0 +1,6 @@
+services:
+  tracker:
+    image: torrust/tracker:latest
+    ports:
+      - "6969:6969/udp"
+      - "6969:6969/tcp"

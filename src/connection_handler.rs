@@ -17,8 +17,26 @@
 
 use tokio::net::TcpListener;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use crate::GLOBAL_CONFIG;
+use crate::bencode::Torrent;
+use reqwest::Url;
 
 #[tokio::main]
-pub async fn start_session() {
+pub async fn start_con_handler(file_i_have: Torrent) {
+    let cfg = GLOBAL_CONFIG.read().unwrap();
+    let address = if cfg!(debug_assertions) {"127.0.0.1:6881"} else {"0.0.0.0"};
+    let port = cfg.port;
+    let listener = TcpListener::bind((address, port));
+
+    loop {
+        let (mut socket, _) = listener.accept().await?;
+
+        tokio::spawn(async move {
+
+        })
+    }
+}
+
+fn announce(file_i_have: Torrent) -> Result<(), Box<dyn std::error::Error>>{
 
 }

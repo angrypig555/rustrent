@@ -15,8 +15,13 @@
    limitations under the License.
 */
 
+use std::fs;
 use std::sync::RwLock;
 use std::sync::LazyLock;
+use std::path::{Path, PathBuf};
+
+use crate::bencode::parse_bencode;
+use crate::connection_handler::start_con_handler;
 /// needs to be initialized 
 mod bencode;
 mod connection_handler;
@@ -26,6 +31,7 @@ mod connection_handler;
 pub struct config {
     pub version: String,
     pub name: String,
+    pub port: u16,
 }
 /// Global configuration
 /// 
@@ -36,16 +42,30 @@ pub static GLOBAL_CONFIG: LazyLock<RwLock<config>> = LazyLock::new(|| {
     RwLock::new(config {
         version: String::from("v0.1"),
         name: String::from("rustrent"),
+        port: 6881,
     })
 });
 
 
 /// Get the current configuration as a formatted string
 /// 
-/// Returns: name version
+/// Returns: name version listen_port
 pub fn get_conf_info() -> String {
     let cfg = GLOBAL_CONFIG.read().unwrap();
-    format!("{} {}", cfg.name, cfg.version)
+    format!("{} {} {}", cfg.name, cfg.version, cfg.port)
+}
+
+/// Starts the session, finds / downloads / seeds a file
+/// 
+/// Takes the path to the torrent file as an argument
+pub fn start_session(file_path: PathBuf) {
+    let file = fs::read(file_path).expect("failed to open torrent file");
+        match parse_bencode(file) {
+            Ok(file_i_have) => {
+                start_con_handler(file_i_have);
+            }
+            Err(e) => println!("{}", e),
+        }
 }
 #[cfg(test)]
 mod tests {
