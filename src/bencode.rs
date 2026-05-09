@@ -101,3 +101,25 @@ pub fn parse_bencode(buffer: Vec<u8>) -> Result<Torrent, serde_bencode::Error> {
     let t = de::from_bytes::<Torrent>(&buffer)?;
     Ok(t)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+    #[test]
+    fn bencode_parse_test() {
+        let test = fs::read("testdata/bencode.rs.torrent").expect("failed to open test file");
+        parse_bencode(test);
+    }
+    #[test]
+    fn bencode_render_test() {
+        let test = fs::read("testdata/bencode.rs.torrent").expect("failed to open test file");
+        match parse_bencode(test) {
+            Ok(test_struct) => {
+                println!("{} {:?}", test_struct.info.name, test_struct.created_by);
+            }
+            Err(e) => println!("{}", e),
+        }
+    }
+}
+
